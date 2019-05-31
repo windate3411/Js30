@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script>
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    const cities = []
+    const input_search = document.querySelector('.search')
+    const suggestions = document.querySelector('.suggestions')
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(json => cities.push(...json));
+
+
+    input_search.addEventListener('change', display)
+    input_search.addEventListener('keyup', display)
+
+
+    function numberWihCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+
+    function FindMacthes(wordToMatch, cities) {
+      return cities.filter(item => {
+        let re = new RegExp(wordToMatch, 'gi')
+        return item.city.match(re) || item.state.match(re)
+      })
+
+    }
+
+    function display() {
+      const MatchArray = FindMacthes(this.value, cities)
+      let html = MatchArray.map(item => {
+        const regrex = new RegExp(this.value, 'gi')
+        const newName = item.city.replace(regrex, `<span class ='hl'>${this.value}</span>`)
+        const newState = item.state.replace(regrex, `<span class ='hl'>${this.value}</span>`)
+        return `
+          <li>
+            <span class = 'name'>${newName} , ${newState}</span>
+            <spna class = 'population'> ${numberWihCommas(item.population)}</span>
+          </li>
+        `;
+      }).join('');
+      suggestions.innerHTML = html;
+      console.log(MatchArray);
+    }
+
+  </script>
+</body>
+
+</html>
