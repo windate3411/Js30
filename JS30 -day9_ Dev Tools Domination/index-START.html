@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('hello!')
+
+    // Interpolated
+    console.log('hello I am a %s string', 'strange')
+
+    // Styled
+    console.log('%c I am a new sentence', 'font-size:50px;');
+
+    // warning!
+    console.warn('nooooooooooooo!')
+
+    // Error :|
+    console.error('This is an error!')
+
+    // Info
+    console.info('this is another error');
+
+    // Testing
+    console.assert(1 === 2, 'that \'s wrong');
+
+    // clearing
+    console.clear()
+
+    // Viewing DOM Elements
+    console.log(document.querySelector('p'));
+    console.dir(document.querySelector('p'))
+
+    // Grouping together
+    console.clear()
+    dogs.forEach(item => {
+      console.group(`${item.name}`)
+      console.log(`the dog\'s name is ${item.name}`);
+      console.log(`the dog\'s age is ${item.age}`);
+      console.groupEnd(`${item.name}`)
+    })
+
+    // counting
+    for (let i = 0; i < 11; i++) {
+      console.count('Danny')
+    }
+    // timing
+    const root = 'https://official-joke-api.appspot.com/random_ten'
+    console.time('fetch data!')
+    fetch(root, { method: 'GET' })
+      .then(response => response.json())
+      .then(json => {
+        console.timeEnd('fetch data!')
+        console.log(json);
+      })
+
+
+  </script>
+</body>
+
+</html>
